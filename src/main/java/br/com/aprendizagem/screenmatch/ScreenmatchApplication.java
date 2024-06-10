@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import br.com.aprendizagem.gui.MenuPrincipal;
+import br.com.aprendizagem.screenmatch.gui.MenuPrincipal;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {

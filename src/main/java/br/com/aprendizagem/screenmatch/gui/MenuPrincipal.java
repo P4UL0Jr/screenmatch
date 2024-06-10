@@ -1,4 +1,4 @@
-package br.com.aprendizagem.gui;
+package br.com.aprendizagem.screenmatch.gui;
 
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;

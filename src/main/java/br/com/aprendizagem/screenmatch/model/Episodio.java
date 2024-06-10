@@ -12,7 +12,7 @@ public class Episodio {
 
 
     
-    public Episodio(Integer temporada, DadosEpsodio dadosEpsodio) {
+    public Episodio(Integer temporada, DadosEpisodio dadosEpsodio) {
         this.temporada = temporada;
         this.titulo = dadosEpsodio.Titulo();
         this.numeroEpisodio = dadosEpsodio.numero();

@@ -3,7 +3,7 @@ package br.com.aprendizagem.screenmatch.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.aprendizagem.interfaces.IConverteDados;
+import br.com.aprendizagem.screenmatch.interfaces.IConverteDados;
 
 public class ConverteDados implements IConverteDados{
 
