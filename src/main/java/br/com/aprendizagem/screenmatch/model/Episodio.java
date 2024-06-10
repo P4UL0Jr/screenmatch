@@ -1,6 +1,7 @@
 package br.com.aprendizagem.screenmatch.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class Episodio {
     private  Integer temporada;
@@ -20,7 +21,12 @@ public class Episodio {
         }catch(NumberFormatException e){
             this.avaliacao=0.0;
         }
-        this.dataLancamento = LocalDate.parse(dadosEpsodio.dataLançamento());
+        try {
+            this.dataLancamento = LocalDate.parse(dadosEpsodio.dataLançamento());
+        } catch (DateTimeParseException e) {
+            this.dataLancamento=null;
+        }
+        
     }
     public Integer getTemporada() {
         return temporada;
@@ -56,13 +62,13 @@ public class Episodio {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("---------");
+        sb.append("\n---------");
         sb.append("temporada=").append(temporada);
         sb.append(", titulo=").append(titulo);
         sb.append(", numeroEpisodio=").append(numeroEpisodio);
         sb.append(", avaliacao=").append(avaliacao);
         sb.append(", dataLancamento=").append(dataLancamento);
-        sb.append("--------");
+        sb.append("\n--------");
         return sb.toString();
     }
 

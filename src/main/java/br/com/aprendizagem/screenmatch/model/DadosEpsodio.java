@@ -8,5 +8,11 @@ public record DadosEpsodio(@JsonAlias("Title")String Titulo,
 @JsonAlias("Episode")Integer numero,
 @JsonAlias("imdbRating")String avaliacao,
 @JsonAlias("Released")String dataLançamento) {
+
+    @Override
+    public String toString() {
+
+        return this.numero +" - Titulo- "+this.Titulo+ "| Avaliação- "+this.avaliacao+"  "+this.dataLançamento;
+    }
     
 }
