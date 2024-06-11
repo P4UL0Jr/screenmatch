@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.aprendizagem.screenmatch.gui.MenuPrincipal;
+import br.com.aprendizagem.screenmatch.treatments.Clear;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -15,6 +16,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		Clear.limpeza();
 		MenuPrincipal menuPrincipal = new MenuPrincipal();
 		menuPrincipal.main();
 	}
