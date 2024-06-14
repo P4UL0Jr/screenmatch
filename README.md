@@ -8,6 +8,7 @@ Este projeto foi desenvolvido para fins de aprendizado em Java, focando em:
 - Manipulação de JSON: Conversão de dados JSON da API para objetos Java usando a biblioteca Jackson. 📦
 - Coleções e Streams: Utilização de listas e streams para armazenar, filtrar e processar dados das séries. 🗃️
 - Orientação a Objetos: Implementação de classes, interfaces e princípios SOLID. 🧱
+- Banco de Dados Realacionais: Utilizar as operações C.R.U.D para tratar os dados das séries. 🏦
 
 ## Funcionalidades ✨
 
