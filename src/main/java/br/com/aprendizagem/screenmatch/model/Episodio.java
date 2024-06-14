@@ -3,15 +3,30 @@ package br.com.aprendizagem.screenmatch.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name = "episodios")
 public class Episodio {
-    private  Integer temporada;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private long id;
+    private Integer temporada;
     private String titulo;
     private Integer numeroEpisodio;
     private double avaliacao;
     private LocalDate dataLancamento;
 
+    @ManyToOne
+    private Serie serie;
 
-    
+    public Episodio(){}
     public Episodio(Integer temporada, DadosEpisodio dadosEpsodio) {
         this.temporada = temporada;
         this.titulo = dadosEpsodio.Titulo();
@@ -70,6 +85,22 @@ public class Episodio {
         sb.append(", dataLancamento=").append(dataLancamento);
         sb.append("\n--------");
         return sb.toString();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
     }
 
     

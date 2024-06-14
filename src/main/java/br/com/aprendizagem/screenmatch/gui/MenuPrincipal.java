@@ -3,11 +3,14 @@ package br.com.aprendizagem.screenmatch.gui;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import br.com.aprendizagem.screenmatch.model.DadosSerie;
 import br.com.aprendizagem.screenmatch.model.DadosTemporada;
+import br.com.aprendizagem.screenmatch.model.Episodio;
 import br.com.aprendizagem.screenmatch.model.Serie;
 import br.com.aprendizagem.screenmatch.repository.SerieRepository;
 import br.com.aprendizagem.screenmatch.service.ConsumoApi;
@@ -18,13 +21,13 @@ public class MenuPrincipal {
     private Scanner leitura = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
-    private final String ENDERECO = "https://www.omdbapi.com/?t=";
-    private final String API_KEY = "&apikey=6585022c";
-
+    private final String ENDERECO = "https://www.omdbapi.com/?";
+    private final String API_KEY = "apikey=6585022c&t=";
+// c&&Episode=1
     List<DadosSerie> dadosSeries = new ArrayList<>();
 
     private SerieRepository repositorio;
-
+    private List<Serie> series = new ArrayList<>();
     public MenuPrincipal(SerieRepository repositorio){
         this.repositorio = repositorio;
     }
@@ -52,6 +55,7 @@ public class MenuPrincipal {
                     break;
                 case 3:
                     buscarSeriesBuscadsa();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -67,9 +71,8 @@ public class MenuPrincipal {
         repositorio.save(serie);
     }
     private void buscarSeriesBuscadsa(){
-        List<Serie> listaSerie = new ArrayList<>();
-        listaSerie = dadosSeries.stream().map(d -> new Serie(d)).collect(Collectors.toList());
-        listaSerie.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
+        series = repositorio.findAll();
+        series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
     }
 
     private DadosSerie getDadosSerie() {
@@ -81,16 +84,27 @@ public class MenuPrincipal {
     }
 
     private void buscarEpisodioPorSerie(){
-        DadosSerie dadosSerie = getDadosSerie();
-        List<DadosTemporada> temporadas = new ArrayList<>();
+        buscarSeriesBuscadsa();
+        System.out.println("Escolha uma série pelo nome");
+        String nomeDaSerie = leitura.nextLine();
+       
+        Optional<Serie> serieFiltrada =  series.stream().filter(s -> s.getTitulo().toLowerCase().contains(nomeDaSerie.toLowerCase())).findFirst();
+        if (serieFiltrada.isPresent()) {
+            var serieEncontrada = serieFiltrada.get();
+            List<DadosTemporada> temporadas = new ArrayList<>();
 
-        for (int i = 1; i <= dadosSerie.totalTemporada(); i++) {
-            var json = consumo.obterDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
-            DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-            temporadas.add(dadosTemporada);
+            for (int i = 1; i<= serieEncontrada.getTotalTemporada();i++) {
+                var json = consumo.obterDados(ENDERECO+API_KEY+serieEncontrada.getTitulo().replace(" ","+")+"&type=series&Season="+i);
+                DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+                temporadas.add(dadosTemporada);
+            }
+            temporadas.stream().forEach(System.out::println);
+
+            List<Episodio> episodios = temporadas.stream().flatMap(d ->d.Episodios().stream().map(e -> new Episodio(e.numero(), e))).collect(Collectors.toList());
+            serieEncontrada.setEpisodios(episodios);
+            repositorio.save(serieEncontrada);
+        }else{
+            System.out.println("Não foi encontrada");
         }
-        temporadas.forEach(System.out::println);
-
-        
     }
 }

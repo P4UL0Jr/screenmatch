@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "series")
@@ -31,9 +33,11 @@ public class Serie {
     private String poster;
     private String votos;
     private String sinopse;
-    @Transient
+
+    @OneToMany(mappedBy="serie", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
-    
+    public Serie(){}
+
     public Serie(DadosSerie dadosSerie){
 
         this.titulo = dadosSerie.titulo();
@@ -139,15 +143,16 @@ public class Serie {
     }
 
     public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
         this.episodios = episodios;
     }
 
 
     @Override
     public String toString() {
-        return  "\n"+titulo + ", avaliacao -" + avaliacao+ "\n Quantidade de temporada - " + totalTemporada + 
-                "\n" + genero + "\n atores - " + atores + ", poster=" + poster + ", votos=" + votos + "\n"
-                + sinopse ;
+        return  "\n"+titulo + ", avaliacao -" + avaliacao+ "\n\nQuantidade de temporada - " + totalTemporada + 
+                "\n" + genero + "\natores - " + atores + ", poster=" + poster + ", votos=" + votos + "\n"
+                + sinopse +"\n\nEpisodios "+ episodios;
     }
 
 }
