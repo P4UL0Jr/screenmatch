@@ -1,15 +1,19 @@
 package br.com.aprendizagem.screenmatch;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.aprendizagem.screenmatch.gui.MenuPrincipal;
+import br.com.aprendizagem.screenmatch.repository.SerieRepository;
 import br.com.aprendizagem.screenmatch.treatments.Clear;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
-//my api key 948861192
+
+	@Autowired
+	private SerieRepository repositorio;
 	public static void main(String[] args) {
 		SpringApplication.run(ScreenmatchApplication.class, args);
 	}
@@ -17,7 +21,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Clear.limpeza();
-		MenuPrincipal menuPrincipal = new MenuPrincipal();
-		menuPrincipal.main();
+		MenuPrincipal menuPrincipal = new MenuPrincipal(repositorio);
+		menuPrincipal.exibeMenu();
 	}
 }
