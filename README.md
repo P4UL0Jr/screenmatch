@@ -24,7 +24,7 @@ O sistema permite:
 - Clonar o repositório:
 
 ```
-git clone https://github.com/seu-usuario/screenmatch.git
+git clone https://github.com/P4UL0Jr/screenmatch.git
 ```
 
 - Importar o projeto em sua IDE:
