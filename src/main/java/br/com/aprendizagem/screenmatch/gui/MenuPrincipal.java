@@ -5,9 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import br.com.aprendizagem.screenmatch.model.Categoria;
 import br.com.aprendizagem.screenmatch.model.DadosSerie;
 import br.com.aprendizagem.screenmatch.model.DadosTemporada;
 import br.com.aprendizagem.screenmatch.model.Episodio;
@@ -39,6 +39,13 @@ public class MenuPrincipal {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Listar séries buscadas
+                    4 - Buscar séries por titulo
+                    5 - Buscar séries por ator
+                    6 - Buscar top 5 Séries
+                    7 - Buscar Séries por categoria
+                    8 - Filtrar séries
+                    9 - Buscar episódio por trecho 
+
                     0 - Sair                                 
                     """;
 
@@ -55,6 +62,24 @@ public class MenuPrincipal {
                     break;
                 case 3:
                     buscarSeriesBuscadsa();
+                    break;
+                case 4: 
+                    buscarSeriePorTitulo();
+                    break;
+                case 5:
+                    buscarSeriePorAutor();
+                    break;
+                case 6:
+                    buscarTop5Series();
+                    break;
+                case 7:
+                    buscarSeriePorCatergoria();
+                    break;
+                case 8:
+                    filtrarSeriePorTemporadaEAvaliacao();
+                    break;
+                case 9: 
+                    buscarEpidodioPorTrecho();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -88,7 +113,7 @@ public class MenuPrincipal {
         System.out.println("Escolha uma série pelo nome");
         String nomeDaSerie = leitura.nextLine();
        
-        Optional<Serie> serieFiltrada =  series.stream().filter(s -> s.getTitulo().toLowerCase().contains(nomeDaSerie.toLowerCase())).findFirst();
+        Optional<Serie> serieFiltrada =  repositorio.findByTituloContainingIgnoreCase(nomeDaSerie);
         if (serieFiltrada.isPresent()) {
             var serieEncontrada = serieFiltrada.get();
             List<DadosTemporada> temporadas = new ArrayList<>();
@@ -106,5 +131,57 @@ public class MenuPrincipal {
         }else{
             System.out.println("Não foi encontrada");
         }
+    }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Escolha uma série por nome");
+        String nomeSerie = leitura.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+        
+        if(serieBuscada.isPresent()){
+            System.out.println(serieBuscada);
+        }else{
+            System.out.println("Série não encontrada");
+        }
+
+    }
+
+    private void buscarSeriePorAutor() {
+        System.out.println("Qual o nome do ator");
+        String nomeAtor = leitura.nextLine();
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCase(nomeAtor);
+        System.out.println(seriesEncontradas);
+    }
+
+    private void buscarTop5Series() {
+        List<Serie> seriesEncontradas = repositorio.findTop5ByOrderByAvaliacaoDesc();
+        for (Serie serie : seriesEncontradas) {
+            System.out.println(serie.getTitulo()+ serie.getAvaliacao());
+        }
+    }
+
+    private void buscarSeriePorCatergoria() {
+        System.out.println("Qual o genero você busca? ");
+        String nomeGenero = leitura.nextLine();
+        Categoria genero = Categoria.fromPortugues(nomeGenero);
+        List<Serie> seriesEncontradas = repositorio.findByGenero(genero);
+        seriesEncontradas.stream().forEach(System.out::println);
+    }
+    private void filtrarSeriePorTemporadaEAvaliacao(){
+        System.out.println("Filtrar série até quantas temporadas");
+        int temporadaFiltrada = leitura.nextInt();
+        leitura.nextLine();
+        System.out.println("Com avaliação a partir de?");
+        double avaliacaoFiltrada = leitura.nextDouble();
+        leitura.nextLine();
+        List<Serie> serieFiltrada = repositorio.seriePorTemporadaEAvaliacao(temporadaFiltrada, avaliacaoFiltrada);
+        serieFiltrada.forEach(s -> System.out.println(s.getTitulo()+" Avaliação - "+ s.getAvaliacao()));
+    }
+
+    private void buscarEpidodioPorTrecho() {
+        System.out.println("Digite o nome do episodio para a busca");
+        String nomeEpsisodio = leitura.nextLine();
+        List<Episodio> listaDeEpisodios = repositorio.episodioPorTrecho(nomeEpsisodio);     
+        listaDeEpisodios.forEach (e -> System.out.println(e.getSerie() +" "+ e.getTemporada() +" "+ e.getTitulo()));   
     }
 }
