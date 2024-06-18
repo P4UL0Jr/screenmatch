@@ -9,6 +9,7 @@ Este projeto foi desenvolvido para fins de aprendizado em Java, focando em:
 - Coleções e Streams: Utilização de listas e streams para armazenar, filtrar e processar dados das séries. 🗃️
 - Orientação a Objetos: Implementação de classes, interfaces e princípios SOLID. 🧱
 - Banco de Dados Realacionais: Utilizar as operações C.R.U.D para tratar os dados das séries. 🏦
+- Spring Boot com Web: Conectar o Back e o Front para criar uma aplicação web. 💻
 
 ## Funcionalidades ✨
 
@@ -64,3 +65,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull r
 ## Contato 📧
 
 Em caso de dúvidas, sugestões ou problemas, entre em contato. 😄
+
+### Este projeto foi desenvolvido durante a formação BackEnd promovida pela parceria Alura - ONE 
+
+![Logo Alura Latam + Oracle](https://eduardout.github.io/Portafolio_Web-Oracle-ONE-Challenge/assets/img/educacion/aluraoracle.jpg)
